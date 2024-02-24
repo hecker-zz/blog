@@ -1,2 +1,1 @@
-# hecker
-This blog will document my growth！
+## This blog will document my growth！
