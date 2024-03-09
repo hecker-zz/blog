@@ -14,7 +14,7 @@
 
   - 使用nmap扫描当前网段
 
-    ![image-20240309114839348](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20240309114839348.png)
+    ![image-20240309114839348](C:/Users/ASUS/AppData/Roaming/Typora/typora-user-images/image-20240309114839348.png)
 
 - 对照DC2的MAC地址，发现目标机的IP为`192.168.200.151`，并对该主机进行详细扫描
 
@@ -330,6 +330,12 @@ export PATH=$PATH:/usr/bin
 ### 提权
 
 - 尝试一下suid提权，发现sudo命令具有suid权限，查看后发现git命令可以不需要密码就拥有root权限
+
+  ```
+  find / -perm -u=s 2>/dev/null
+  ```
+
+  
 
   ![image-20240309130135719](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20240309130135719.png)
 
