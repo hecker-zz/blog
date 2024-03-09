@@ -3,10 +3,11 @@
 ![image](https://github.com/hecker-zz/hecker/assets/153266742/1f0f145e-839f-4327-b4ac-4808897bd9b9)
 
 - 拿到我们后门文件的url，以我靶机为例：
+
 ![image](https://github.com/hecker-zz/hecker/assets/153266742/7cde6c29-42d6-4c52-a11c-32347af54bb8)
 
 - 准备需要在目标机执行的cmd命令，因为请求中的命令是被base64编码的，所以我们也需要把我们的命令转成base64，转码就需要用到**base64.b64encode()** ，这里的参数需要的是**二进制**。
-![image](https://github.com/hecker-zz/hecker/assets/153266742/579093b8-9698-4d21-9e82-0a2c0cda4371)
+  ![image](https://github.com/hecker-zz/hecker/assets/153266742/579093b8-9698-4d21-9e82-0a2c0cda4371)
 
 
 - 创建一个请求的头部
