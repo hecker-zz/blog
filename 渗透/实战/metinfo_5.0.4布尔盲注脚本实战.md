@@ -86,7 +86,7 @@
   [+]  admin_name_pass is :admin:e10adc3949ba59abbe56e057f20f883e
   ```
 
-- 看到后面是密文，盲猜MD5值，直接去解码
+- 看到后面是密文，是32位盲猜是MD5值，直接去解码
 
   ![image-20240312144520646](https://hecker-typora.oss-cn-shanghai.aliyuncs.com/image-20240312144520646.png)
 
